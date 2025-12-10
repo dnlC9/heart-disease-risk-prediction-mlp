@@ -93,3 +93,43 @@ optimizer.update_params(layer2)
 optimizer.post_update_params()
 
 print("Single forward/backward pass completed and parameters updated.")
+
+# ----------------------------------------------------------
+#               TRAINING LOOP (FULL BATCH)
+# ----------------------------------------------------------
+
+# Number of epochs for training
+epochs = 500
+
+print("\nStarting training loop...\n")
+
+for epoch in range(epochs):
+
+    # Forward pass
+    layer1.forward(X)
+    activation1.forward(layer1.output)
+    layer2.forward(activation1.output)
+    loss = loss_activation.forward(layer2.output, y)
+
+    # Predictions and accuracy
+    predictions = np.argmax(loss_activation.output, axis=1)
+    accuracy = np.mean(predictions == y)
+
+    # Backward pass
+    loss_activation.backward(loss_activation.output, y)
+    layer2.backward(loss_activation.dinputs)
+    activation1.backward(layer2.dinputs)
+    layer1.backward(activation1.dinputs)
+
+    # Update parameters
+    optimizer.pre_update_params()
+    optimizer.update_params(layer1)
+    optimizer.update_params(layer2)
+    optimizer.post_update_params()
+
+    # Print training progress every 50 epochs
+    if epoch % 50 == 0 or epoch == epochs - 1:
+        print(
+            f"Epoch {epoch} | Loss: {loss:.4f} | Accuracy: {accuracy:.4f} | "
+            f"LR: {optimizer.current_learning_rate:.6f}"
+        )
