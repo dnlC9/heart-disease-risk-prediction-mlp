@@ -42,3 +42,54 @@ y_one_hot = np.eye(n_classes)[y]
 
 print("One-hot encoding completed. Sample:")
 print(y[:5], "→", y_one_hot[:5])
+
+# Note:
+# Before implementing the full training loop (multiple epochs),
+# we first run a single forward + backward pass on the whole dataset.
+# This helps validate:
+# - that all layers are connected correctly,
+# - that shapes are consistent,
+# - that the loss and accuracy can be computed,
+# - and that gradients flow without numerical issues.
+
+# --- Single training step (forward + loss + accuracy + backward + update) ---
+
+# Forward pass
+# 1) First dense layer
+layer1.forward(X)
+activation1.forward(layer1.output)
+
+# 2) Output layer
+layer2.forward(activation1.output)
+
+# 3) Softmax + Categorical Cross-Entropy combined
+loss = loss_activation.forward(layer2.output, y)  # we can pass class indices (0/1)
+
+# Predictions and accuracy
+predictions = np.argmax(loss_activation.output, axis=1)
+accuracy = np.mean(predictions == y)
+
+print("\nSingle training step (before loop):")
+print(f"Initial loss: {loss:.4f}")
+print(f"Initial accuracy: {accuracy:.4f}")
+
+# Backward pass
+# 1) Softmax + CCE combined backward
+loss_activation.backward(loss_activation.output, y)
+
+# 2) Backprop through last dense layer
+layer2.backward(loss_activation.dinputs)
+
+# 3) Backprop through ReLU
+activation1.backward(layer2.dinputs)
+
+# 4) Backprop through first dense layer
+layer1.backward(activation1.dinputs)
+
+# Parameter update with Adam
+optimizer.pre_update_params()
+optimizer.update_params(layer1)
+optimizer.update_params(layer2)
+optimizer.post_update_params()
+
+print("Single forward/backward pass completed and parameters updated.")
