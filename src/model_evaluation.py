@@ -1,3 +1,26 @@
+"""
+Model Evaluation Module
+-----------------------
+
+This script evaluates the neural network using a 5-fold cross-validation
+pipeline. For each fold, the model is re-instantiated, trained from scratch
+on the corresponding training split, and evaluated on the validation split.
+
+The evaluation includes:
+- Accuracy
+- Sensitivity (recall for class 1: disease)
+- Specificity (recall for class 0: no disease)
+- Precision
+- F1-score
+- ROC-AUC
+
+A final summary reports the mean and standard deviation of each metric across folds,
+providing a robust estimate of the model's generalization performance.
+
+This module follows a professional ML workflow and is intended for portfolio-quality
+model validation.
+"""
+
 import numpy as np
 from sklearn.model_selection import KFold
 from sklearn.metrics import (
@@ -6,12 +29,13 @@ from sklearn.metrics import (
     recall_score,
     f1_score,
     roc_auc_score,
+    roc_curve,
 )
 
-# Importamos los datos ya limpios (X, y) desde el módulo de cleaning
+# Import cleaned data (features X and labels y)
 from data_cleaning import X, y
 
-# Importamos los componentes del modelo ya entrenable
+# Import NN components (same ones used in training)
 from model_components import (
     DenseLayer,
     ActivationReLU,
@@ -19,20 +43,21 @@ from model_components import (
     OptimizerAdam,
 )
 
+# ------------------------------------------------------------------
+#               BASIC DATASET INFO AND K-FOLD SPLIT CHECK
+# ------------------------------------------------------------------
+
 print(f"Dataset shape -> X: {X.shape}, y: {y.shape}")
 
-# 1) Definimos el número de divisiones (folds)
 n_splits = 5
 kf = KFold(n_splits=n_splits, shuffle=True, random_state=42)
 
-# 2) Recorremos los folds y mostramos las dimensiones de train/test
 fold_id = 0
 all_test_indices = []
 
 for train_index, test_index in kf.split(X):
     fold_id += 1
 
-    # Si X e y son DataFrame/Series de pandas, usamos .iloc
     X_train, X_test = X.iloc[train_index], X.iloc[test_index]
     y_train, y_test = y.iloc[train_index], y.iloc[test_index]
 
@@ -40,10 +65,8 @@ for train_index, test_index in kf.split(X):
     print(f"  X_train shape: {X_train.shape}, y_train shape: {y_train.shape}")
     print(f"  X_test  shape: {X_test.shape}, y_test  shape: {y_test.shape}")
 
-    # Guardamos los índices de test para comprobar la cobertura total al final
     all_test_indices.extend(test_index)
 
-# 3) Comprobación de que el dataset se ha dividido en 5 partes sin solaparse
 all_test_indices = np.array(all_test_indices)
 
 print("\n--- K-Fold split check ---")
@@ -51,21 +74,19 @@ print(f"Total samples in dataset:      {X.shape[0]}")
 print(f"Total test indices seen:       {len(all_test_indices)}")
 print(f"Unique test indices:           {len(np.unique(all_test_indices))}")
 
-# Checks de integridad (profesional)
 assert len(all_test_indices) == X.shape[0], \
     "Some samples were not included in any test fold."
-
 assert len(np.unique(all_test_indices)) == X.shape[0], \
     "Some samples appear multiple times in test folds."
 
 print("K-Fold integrity check passed ✅")
 
 
-# ----------------------------------------------------------
+# ------------------------------------------------------------------
 #         TRAIN & EVALUATE MODEL IN EACH K-FOLD
-# ----------------------------------------------------------
+# ------------------------------------------------------------------
 
-n_splits = 5
+# Recreate KFold iterator (the previous one was already consumed)
 kf = KFold(n_splits=n_splits, shuffle=True, random_state=42)
 
 # Lists to store metrics per fold
@@ -75,6 +96,10 @@ fold_specificities = []   # recall for class "0" (no disease)
 fold_precisions = []
 fold_f1s = []
 fold_aucs = []
+
+# Lists to store ROC curve data per fold (for later visualization)
+fold_fprs = []
+fold_tprs = []
 
 epochs = 300
 
@@ -86,7 +111,7 @@ for train_index, test_index in kf.split(X):
     fold_id += 1
     print(f"\n========== Fold {fold_id}/{n_splits} ==========")
 
-    # Split data
+    # Split data for this fold
     X_train, X_test = X.iloc[train_index], X.iloc[test_index]
     y_train, y_test = y.iloc[train_index], y.iloc[test_index]
 
@@ -147,7 +172,7 @@ for train_index, test_index in kf.split(X):
     test_predictions = np.argmax(loss_activation.output, axis=1)
     test_accuracy = np.mean(test_predictions == y_test)
 
-    # Confusion matrix
+    # Confusion matrix (force 2x2 using labels=[0,1])
     cm = confusion_matrix(y_test, test_predictions, labels=[0, 1])
     tn, fp, fn, tp = cm.ravel()
 
@@ -166,6 +191,9 @@ for train_index, test_index in kf.split(X):
     y_proba_class1 = loss_activation.output[:, 1]
     auc = roc_auc_score(y_test, y_proba_class1)
 
+    # ROC curve values (FPR, TPR) needed for plotting
+    fpr, tpr, thresholds = roc_curve(y_test, y_proba_class1)
+
     print(f"  Test loss: {test_loss:.4f} | Test acc: {test_accuracy:.4f}")
     print(f"  Confusion matrix:\n{cm}")
     print(f"  Sensitivity (recall class 1): {sensitivity:.4f}")
@@ -182,11 +210,16 @@ for train_index, test_index in kf.split(X):
     fold_f1s.append(f1)
     fold_aucs.append(auc)
 
+    # Store ROC curve data for later visualization
+    fold_fprs.append(fpr)
+    fold_tprs.append(tpr)
+
 # -------- SUMMARY ACROSS FOLDS --------
 def summarize_metric(name, values):
     mean = np.mean(values)
     std = np.std(values)
     print(f"{name}: {mean:.4f} ± {std:.4f}")
+
 
 print("\n========== Cross-Validation Summary ==========")
 summarize_metric("Accuracy", fold_accuracies)
@@ -195,3 +228,20 @@ summarize_metric("Specificity (class 0)", fold_specificities)
 summarize_metric("Precision", fold_precisions)
 summarize_metric("F1-score", fold_f1s)
 summarize_metric("ROC-AUC", fold_aucs)
+
+# ----------------------------------------------------------
+#   SAVE ROC CURVE DATA FOR LATER VISUALIZATION (e.g. Streamlit)
+# ----------------------------------------------------------
+
+# Note:
+# We store FPR and TPR arrays for each fold in a compressed NumPy file.
+# A Streamlit app can later load this file and plot all ROC curves.
+
+np.savez(
+    "roc_curves.npz",
+    fprs=np.array(fold_fprs, dtype=object),
+    tprs=np.array(fold_tprs, dtype=object),
+    aucs=np.array(fold_aucs),
+)
+
+print("\nROC curve data saved to 'roc_curves.npz' for later visualization.")
