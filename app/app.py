@@ -1,13 +1,20 @@
 # app.py
+import sys
+from pathlib import Path
+
 import streamlit as st
 
-from modules.data_loader import load_heart_data
-from modules import (
-    page_dataset_overview,
-    page_model_training,
-    page_data_viz,
-    page_prediction,
-)
+# Ensure project root is on the path so we can import inference/ modules
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+# Local imports (files live in the same folder)
+from data_loader import load_heart_data
+import page_1 as page_dataset_overview
+import page_2 as page_model_training
+import page_3 as page_data_viz
+import page_4 as page_prediction
 
 
 st.set_page_config(

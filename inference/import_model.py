@@ -26,6 +26,14 @@ from typing import Union
 import numpy as np
 import pandas as pd
 
+# Make sure the core modules in src/ are importable when this script is run
+import sys
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+SRC_DIR = PROJECT_ROOT / "src"
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
+
 from model_components import (
     DenseLayer,
     ActivationReLU,
